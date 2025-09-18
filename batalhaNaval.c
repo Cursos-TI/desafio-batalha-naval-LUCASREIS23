@@ -5,36 +5,92 @@
 // Siga os comentários para implementar cada parte do desafio.
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+#include <stdio.h>
+#include <stdlib.h>
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+#define SIZE 7
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+// Função para imprimir a matriz
+void imprimirMatriz(int matriz[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+// Função para limpar a matriz
+void limparMatriz(int matriz[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            matriz[i][j] = 0;
+        }
+    }
+}
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+// Cone apontando para baixo
+void cone(int matriz[SIZE][SIZE]) {
+    int centro = SIZE / 2;
+    for (int i = 0; i <= centro; i++) {
+        for (int j = centro - i; j <= centro + i; j++) {
+            matriz[i][j] = 1;
+        }
+    }
+}
+
+// Cruz
+void cruz(int matriz[SIZE][SIZE]) {
+    int centro = SIZE / 2;
+    for (int i = 0; i < SIZE; i++) {
+        matriz[i][centro] = 1;  // coluna central
+        matriz[centro][i] = 1;  // linha central
+    }
+}
+
+// Octaedro (losango)
+void octaedro(int matriz[SIZE][SIZE]) {
+    int centro = SIZE / 2;
+    int raio = centro;
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            if (abs(i - centro) + abs(j - centro) <= raio) {
+                matriz[i][j] = 1;
+            }
+        }
+    }
+}
+
+int main() {
+    int matriz[SIZE][SIZE];
+    int opcao;
+
+    printf("Escolha a forma:\n");
+    printf("1 - Cone\n");
+    printf("2 - Cruz\n");
+    printf("3 - Octaedro (losango)\n");
+    printf("Opcao: ");
+    scanf("%d", &opcao);
+
+    limparMatriz(matriz);
+
+    switch (opcao) {
+        case 1:
+            cone(matriz);
+            break;
+        case 2:
+            cruz(matriz);
+            break;
+        case 3:
+            octaedro(matriz);
+            break;
+        default:
+            printf("Opcao invalida!\n");
+            return 0;
+    }
+
+    printf("\nResultado:\n");
+    imprimirMatriz(matriz);
 
     return 0;
 }
